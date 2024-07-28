@@ -17,7 +17,7 @@ public class RegistrationScreenPom {
 	@FindBy(xpath = "//android.widget.EditText[@resource-id=\"com.qatestapp:id/emailTextField\"]")
 	private WebElement Emailtextfield;
 
-	@FindBy(xpath = "com.qatestapp:id/phoneNumberTextField")
+	@FindBy(xpath = "//android.widget.EditText[@resource-id=\"com.qatestapp:id/phoneNumberTextField\"]")
 	private WebElement PhoneNUmbertextfield;
 
 	@FindBy(xpath = "//android.widget.CheckBox[@resource-id=\"com.qatestapp:id/subscribeCheckbox\"]")

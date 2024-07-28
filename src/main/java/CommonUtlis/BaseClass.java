@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterSuite;
@@ -15,7 +16,6 @@ public class BaseClass {
 	public static AndroidDriver driver;
 
 	public DataReadClass read = new DataReadClass();
-	public Screnshot screenshot = new Screnshot();
 	public static WebDriverWait wait;
 
 	@BeforeSuite
@@ -55,5 +55,10 @@ public class BaseClass {
 		
 		driver.quit();
 		// driver.removeApp(driver.getCurrentPackage());
+	}
+
+	public WebDriver getDriver() {
+		// TODO Auto-generated method stub
+		return driver;
 	}
 }

@@ -100,7 +100,7 @@ public class loginPage extends BaseClass {
 	        WebElement startTestButton = loginPage.getStartTestButton();
 	        Reporter.log("Clicking the Start Test button", true);
 	        startTestButton.click();
-	        
+             Thread.sleep(Duration.ofSeconds(10));
 	        Reporter.log("Waiting for the Registration Screen to load...", true);
 	        wait.until(ExpectedConditions.visibilityOf(registrationScreen.getPageTitle()));
 
