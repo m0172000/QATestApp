@@ -1,5 +1,6 @@
 package PomRepository;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -8,56 +9,51 @@ import io.appium.java_client.android.AndroidDriver;
 
 public class LoginPagePom {
 
-	@FindBy(xpath = "//android.widget.TextView[@text=\"QATestApp\"]")
-	private WebElement QATestAppTitle;
+	@FindBy(xpath = "/html/body/div/div[1]/div/div/div/div/a/strong")
+	private WebElement SignInDiscord;
 	
-	@FindBy(xpath = "//android.widget.EditText[@resource-id=\"com.qatestapp:id/emailTextField1\"]")
-	private WebElement UserIDTextField;
+	@FindBy(id = "username")
+	private WebElement EmailTextField;
 	
-	@FindBy(xpath = "//android.widget.EditText[@resource-id=\"com.qatestapp:id/passwordTextField\"]")
+	@FindBy(id = "password")
 	private WebElement PasswordTextField;
 	
-	@FindBy(xpath = "//android.widget.ImageButton[@resource-id=\"com.qatestapp:id/text_input_end_icon\"]")
-	private WebElement EyeIcon;
+	@FindBy(xpath = "//button[text()=\"Log In\"]")
+	private WebElement LoginButton;
 	
-	@FindBy(xpath = "//android.widget.Button[@resource-id=\"com.qatestapp:id/LoginButton\"]")
-	private WebElement StartTestButton;
+	@FindBy(xpath = "//a[text()=\"Forgot Password?\"]")
+	private WebElement ForgotlinkTest;
 	
-	@FindBy(xpath = "//android.widget.TextView[@text=\"INSTRUCTIONS\"]")
-	private WebElement subtitle;
+	@FindBy(xpath = "/html/body/div/div[1]/div/div/div/form/p[2]/small/a")
+	private WebElement SigupLinktext;
 	
-	@FindBy(xpath = "//android.widget.TextView[@resource-id=\"com.qatestapp:id/layout6\"]")
-	private WebElement InstructionDetailsText;
-	
-	public LoginPagePom(AndroidDriver driver) {
+
+	public LoginPagePom(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 	}
 
-	public WebElement getQATestAppTitle() {
-		return QATestAppTitle;
+	public WebElement getSignInDiscord() {
+		return SignInDiscord;
 	}
 
-	public WebElement getUserIDTextField() {
-		return UserIDTextField;
+	public WebElement getEmailTextField() {
+		return EmailTextField;
 	}
 
 	public WebElement getPasswordTextField() {
 		return PasswordTextField;
 	}
-	
-	public WebElement getEyeIcon() {
-		return EyeIcon;
-	}
-	public WebElement getStartTestButton() {
-		return StartTestButton;
+
+	public WebElement getLoginButton() {
+		return LoginButton;
 	}
 
-	public WebElement getSubtitle() {
-		return subtitle;
+	public WebElement getForgotlinkTest() {
+		return ForgotlinkTest;
 	}
 
-	public WebElement getInstructionDetailsText() {
-		return InstructionDetailsText;
+	public WebElement getSigupLinktext() {
+		return SigupLinktext;
 	}
 		
 }

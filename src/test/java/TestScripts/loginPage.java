@@ -1,11 +1,14 @@
 package TestScripts;
 
-import io.appium.java_client.android.AndroidDriver;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
+import org.apache.commons.math3.primes.Primes;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,231 +22,141 @@ import org.testng.asserts.SoftAssert;
 
 import CommonUtlis.BaseClass;
 import PomRepository.LoginPagePom;
-import PomRepository.RegistrationScreenPom;
 
 public class loginPage extends BaseClass {
-  
-	 @Test(priority = 1)
-	    public void VerifyingLoginPage() {
-	        LoginPagePom loginPage = new LoginPagePom(driver);
-	        PageFactory.initElements(driver, loginPage);
-	        SoftAssert softAssert = new SoftAssert();
 
-	        Reporter.log("Starting validation of all elements and their texts.", true);
+	@Test(priority = 1)
+	public void verifyElementsVisibility() {
+		SoftAssert softAssert = new SoftAssert();
+		LoginPagePom LoginPom = new LoginPagePom(driver);
+		Reporter.log("Starting visibility check of web elements", true);
+		// Check the visibility of the 'Sign In with Discord' link
+		boolean isSignInDiscordDisplayed = LoginPom.getSignInDiscord().isDisplayed();
+		softAssert.assertTrue(isSignInDiscordDisplayed, "Sign In with Discord link is not displayed.");
 
-	        WebElement qATestAppTitle = loginPage.getQATestAppTitle();
-	        boolean isQATestAppTitleDisplayed = qATestAppTitle.isDisplayed();
-	        softAssert.assertTrue(isQATestAppTitleDisplayed, "QATestApp Title is not displayed.");
+		// Check the visibility of the Email Text Field
+		boolean isEmailTextFieldDisplayed = LoginPom.getEmailTextField().isDisplayed();
+		softAssert.assertTrue(isEmailTextFieldDisplayed, "Email Text Field is not displayed.");
 
-	        WebElement userIdField = loginPage.getUserIDTextField();
-	        boolean isUserIdFieldDisplayed = userIdField.isDisplayed();
-	        softAssert.assertTrue(isUserIdFieldDisplayed, "User ID field is not displayed.");
+		// Check the visibility of the Password Text Field
+		boolean isPasswordTextFieldDisplayed = LoginPom.getPasswordTextField().isDisplayed();
+		softAssert.assertTrue(isPasswordTextFieldDisplayed, "Password Text Field is not displayed.");
 
-	        WebElement passwordField = loginPage.getPasswordTextField();
-	        boolean isPasswordFieldDisplayed = passwordField.isDisplayed();
-	        softAssert.assertTrue(isPasswordFieldDisplayed, "Password field is not displayed.");
+		// Check the visibility of the Login Button
+		boolean isLoginButtonDisplayed = LoginPom.getLoginButton().isDisplayed();
+		softAssert.assertTrue(isLoginButtonDisplayed, "Login Button is not displayed.");
 
-	        WebElement eyeIcon = loginPage.getEyeIcon();
-	        boolean isEyeIconDisplayed = eyeIcon.isDisplayed();
-	        softAssert.assertTrue(isEyeIconDisplayed, "Eye icon is not displayed.");
+		// Check the visibility of the Forgot Password link
+		boolean isForgotlinkTestDisplayed = LoginPom.getForgotlinkTest().isDisplayed();
+		softAssert.assertTrue(isForgotlinkTestDisplayed, "Forgot Password link is not displayed.");
 
-	        WebElement startTestButton = loginPage.getStartTestButton();
-	        boolean isStartTestButtonDisplayed = startTestButton.isDisplayed();
-	        softAssert.assertTrue(isStartTestButtonDisplayed, "Start Test button is not displayed.");
+		// Check the visibility of the Sign Up link
+		boolean isSignupLinktextDisplayed = LoginPom.getSigupLinktext().isDisplayed();
+		softAssert.assertTrue(isSignupLinktextDisplayed, "Sign Up link is not displayed.");
 
-	        WebElement subtitle = loginPage.getSubtitle();
-	        boolean isSubtitleDisplayed = subtitle.isDisplayed();
-	        softAssert.assertTrue(isSubtitleDisplayed, "Subtitle is not displayed.");
-
-	        WebElement instructionDetailsText = loginPage.getInstructionDetailsText();
-	        boolean isInstructionDetailsTextDisplayed = instructionDetailsText.isDisplayed();
-	        softAssert.assertTrue(isInstructionDetailsTextDisplayed, "Instruction Details Text is not displayed.");
-
-	        String qATestAppTitleText = qATestAppTitle.getText();
-	        softAssert.assertEquals(qATestAppTitleText, "QATestApp", "QATestApp Title text does not match.");
-
-	        String userIdText = userIdField.getText();
-	        softAssert.assertEquals(userIdText, "User ID *", "User ID field text does not match.");
-
-	        String passwordText = passwordField.getText();
-	        softAssert.assertEquals(passwordText, "Password *", "Password field text does not match.");
-
-	        String startTestButtonText = startTestButton.getText();
-	        softAssert.assertEquals(startTestButtonText, "START TEST", "Start Test button text does not match.");
-
-	        String subtitleText = subtitle.getText();
-	        softAssert.assertEquals(subtitleText, "INSTRUCTIONS", "Subtitle text does not match.");
-
-	        String instructionDetailsTextContent = instructionDetailsText.getText();
-	        softAssert.assertNotNull(instructionDetailsTextContent, "Instruction Details Text content is not present.");
-
-	        softAssert.assertAll();
-	        Reporter.log("All elements are displayed and texts are correct.", true);
-	    }
-
-	    @Test(dataProvider = "validLoginData", priority = 2)
-	    public void validatingLoginWithValidCredentials(String userID, String password) throws InterruptedException {
-	        LoginPagePom loginPage = new LoginPagePom(driver);
-	        RegistrationScreenPom registrationScreen = new RegistrationScreenPom(driver);
-	        SoftAssert softAssert = new SoftAssert();
-
-	        Reporter.log("Starting test with UserID: " + userID + " and Password: " + password, true);
-
-	        WebElement userIdField = loginPage.getUserIDTextField();
-	        Reporter.log("Entering UserID: " + userID, true);
-	        userIdField.sendKeys(userID);
-
-	        WebElement passwordField = loginPage.getPasswordTextField();
-	        Reporter.log("Entering Password: [PROTECTED]", true);
-	        passwordField.sendKeys(password);
-
-	        WebElement startTestButton = loginPage.getStartTestButton();
-	        Reporter.log("Clicking the Start Test button", true);
-	        startTestButton.click();
-             Thread.sleep(Duration.ofSeconds(10));
-	        Reporter.log("Waiting for the Registration Screen to load...", true);
-	        wait.until(ExpectedConditions.visibilityOf(registrationScreen.getPageTitle()));
-
-	        String actualText1 = registrationScreen.getPageTitle().getText();
-	        String expectedText1 = "RegistrationScreen";
-	        Reporter.log("Actual Registration Screen Title: " + actualText1, true);
-	        Reporter.log("Expected Registration Screen Title: " + expectedText1, true);
-
-	        softAssert.assertEquals(actualText1, expectedText1, "Registration Screen title does not match!");
-
-	        Reporter.log("User logged into the application successfully with valid credentials.", true);
-	        softAssert.assertAll();
-	    }
-
-	    @Test(dataProvider = "invalidLoginData", priority = 3)
-	    public void validatingLoginWithInvalidCredentials(String userID, String password) {
-	        LoginPagePom loginPage = new LoginPagePom(driver);
-	        PageFactory.initElements(driver, loginPage);
-	        SoftAssert softAssert = new SoftAssert();
-
-	        Reporter.log("Starting test with invalid UserID: " + userID + " and Password: " + password, true);
-
-	        WebElement userIdField = loginPage.getUserIDTextField();
-	        Reporter.log("Entering invalid UserID: " + userID, true);
-	        userIdField.sendKeys(userID);
-
-	        WebElement passwordField = loginPage.getPasswordTextField();
-	        Reporter.log("Entering invalid Password: [PROTECTED]", true);
-	        passwordField.sendKeys(password);
-
-	        WebElement startTestButton = loginPage.getStartTestButton();
-	        Reporter.log("Clicking the Start Test button", true);
-	        startTestButton.click();
-
-	        boolean isButtonDisplayed = startTestButton.isDisplayed();
-	        softAssert.assertTrue(isButtonDisplayed, "The Start Test button is not displayed. This may indicate a login was successful, which is unexpected.");
-
-	        Reporter.log("Test passed: User was not able to log in with invalid credentials, as expected.", true);
-	        softAssert.assertAll();
-	    }
-
-	    @Test(dataProvider = "passwordVisibilityData", priority = 5)
-	    public void validatingPasswordVisibilityToggle(String userID, String password) {
-	        LoginPagePom loginPage = new LoginPagePom(driver);
-	        PageFactory.initElements(driver, loginPage);
-	        SoftAssert softAssert = new SoftAssert();
-
-	        Reporter.log("Starting test for password visibility toggle.", true);
-
-	        WebElement passwordField = loginPage.getPasswordTextField();
-	        WebElement eyeIcon = loginPage.getEyeIcon(); // Ensure this method returns the eye icon WebElement
-
-	        passwordField.clear();
-	        passwordField.sendKeys(password);
-	        Reporter.log("Entered password.", true);
-
-	        wait.until(ExpectedConditions.visibilityOf(passwordField));
-
-	        eyeIcon.click();
-	        Reporter.log("Clicked eye icon to reveal password.", true);
-
-	        wait.until(ExpectedConditions.visibilityOf(passwordField));
-
-	        String isCheckedAfterReveal = eyeIcon.getAttribute("checked");
-	        softAssert.assertEquals(isCheckedAfterReveal, "true", "Password visibility toggle failed: Password is not revealed correctly.");
-
-	        eyeIcon.click();
-	        Reporter.log("Clicked eye icon to hide password.", true);
-
-	        wait.until(ExpectedConditions.visibilityOf(passwordField));
-
-	        String isCheckedAfterHide = eyeIcon.getAttribute("checked");
-	        softAssert.assertEquals(isCheckedAfterHide, "false", "Password hiding toggle failed: Password is still visible.");
-
-	        Reporter.log("Test passed: Password visibility toggle is working correctly.", true);
-	        softAssert.assertAll();
-	    }
+		softAssert.assertAll();
+		Reporter.log("All elements in log in page  displayed.", true);
+	}
 	
+	@DataProvider(name = "validLoginData")
+	public Object[][] validLoginDataProvider() throws Throwable {
+		return new Object[][] { { "kmmanoj831456@gmail.com", "Pwd4so!l" } };
+	}
+
+	@Test(dataProvider = "validLoginData", priority = 2)
+	public void testValidLogin(String validEmail, String validPassword) {
+		// Initialize the Page Object for the Login page
+		LoginPagePom loginPage = new LoginPagePom(driver);
+
+		// Initialize SoftAssert for multiple assertions
+		SoftAssert softAssert = new SoftAssert();
+
+		// Enter email
+		loginPage.getEmailTextField().sendKeys(validEmail);
+		// Enter password
+		loginPage.getPasswordTextField().sendKeys(validPassword);
+		// "Password input did not match the expected value.");
+		// Click the 'Log In' button
+		loginPage.getLoginButton().click();
+
+		wait.until(ExpectedConditions.urlToBe("https://app.germanyiscalling.com/cv/upload/"));
+		// Verify the user is redirected to the correct URL
+		String expectedUrl = "https://app.germanyiscalling.com/cv/upload/";
+		String actualUrl = driver.getCurrentUrl();
+		softAssert.assertEquals(actualUrl, expectedUrl, "URL does not match after login.");
+		// Verify the page title after successful login
+		String expectedTitle = "Upload your CV | Germany Is Calling";
+		String actualTitle = driver.getTitle();
+		softAssert.assertEquals(actualTitle, expectedTitle, "Page title does not match after login.");
+		// Assert all conditions
+		softAssert.assertAll();
+	   driver.manage().addCookie(new Cookie("sessionid", ""));
+	   driver.navigate().refresh();
+	}
 	
-	 @Test(dataProvider = "bothFieldsEmptyData", priority=4)
-	    public void validatingLoginWithBothFieldsEmpty(String userID, String password) {
-	        LoginPagePom loginPage = new LoginPagePom(driver);
-	        PageFactory.initElements(driver, loginPage);
 
-	        WebElement userIdField = loginPage.getUserIDTextField();
-	        WebElement passwordField = loginPage.getPasswordTextField();
-	        WebElement startTestButton = loginPage.getStartTestButton();
+	@DataProvider(name = "InvaidTestData")
+	public Object[][] InvaidTestData1(){
+		 Object[][] a= {{"Invalid Email and Password","kmmanoj123@gmail.com","123345"},{"VaildEmail and invalid password","kmmanoj696@gmail.com","Abcddd"},{"Invalid EmailID and validPassword","Kma@gmail.com","Pwd4so!l"}};
+	 return a;
+	}
 
-	        userIdField.clear();
-	        passwordField.clear();
-	        startTestButton.click();
+	@Test(dataProvider = "InvaidTestData",priority = 3)
+	public void TestLoginPageWithInvalidData(String Scenario,String email,String password) throws Throwable {
+		LoginPagePom loginPage = new LoginPagePom(driver);
+         Reporter.log(Scenario);
+		// Initialize SoftAssert
+		SoftAssert softAssert = new SoftAssert();
 
-	        try {
-	            Thread.sleep(10000);
-	        } catch (InterruptedException e) {
-	            Reporter.log("Interrupted Exception occurred during sleep: " + e.getMessage(), true);
-	        }
+		// Enter email and password based on the scenario
+		loginPage.getEmailTextField().sendKeys(email);
+		loginPage.getPasswordTextField().sendKeys(password);
 
-	        boolean isStartTestButtonDisplayed = startTestButton.isDisplayed();
-	        Assert.assertTrue(isStartTestButtonDisplayed, "Start Test button should be displayed after clicking with empty fields.");
-	        Reporter.log("The Email cannot be empty error message is displayed when user id and email field is empty.", true);
-	    }
+		// Click the 'Log In' button
+		loginPage.getLoginButton().click();
+        Thread.sleep(Duration.ofSeconds(5));
+		WebElement Error = driver.findElement(By.xpath("/html/body/div/div[1]/div/div/div/form/div[3]"));
+		
+		softAssert.assertTrue(Error.isDisplayed(), Error.getText()+" Error message is not displayed.");
+		String expectedError="Please enter a correct username and password. Note that both fields may be case-sensitive.";
+		softAssert.assertEquals(Error.getText(), expectedError, "Email error message text is incorrect.");
 
-    @DataProvider(name = "validLoginData")
-    public Object[][] validLoginDataProvider() throws Throwable {
-        String userID = read.readStringData("LoginData", 1, 0);
-        String password = read.readStringData("LoginData", 1, 1);
-        return new Object[][] {
-            {userID, password}
-        };
-    }
+		// Assert all conditions
+		softAssert.assertAll();
 
-    @DataProvider(name = "invalidLoginData")
-    public Object[][] invalidLoginDataProvider() throws Throwable {
-        String userID = read.readStringData("LoginData", 2, 0);
-        String password = read.readStringData("LoginData", 2, 1);
-        return new Object[][] {
-            {userID, password}
-        };
-    }
+	}
+	@DataProvider(name = "loginTestData")
+	public Object[][] provideLoginTestData() {
+		return new Object[][] {
+				// Scenario, Email, Password, Expected Email Error, Expected Password Error
+				{ "WithoutEmailAndPassword", "", "",
+						"Email: This field is required.\n" + "Password: This field is required." },
+				{ "WithoutPassword", "validuser@example.com", "", "Password: This field is required." },
+				{ "WithoutEmail", "", "validpassword123", "Email: This field is required." } };
+	}
 
-    @DataProvider(name = "bothFieldsEmptyData")
-    public Object[][] bothFieldsEmptyDataProvider() throws Throwable {
-        String userID = read.readStringData("LoginData", 5, 0);
-        String password = read.readStringData("LoginData", 5, 1);
-        return new Object[][] {
-            {userID, password}
-        };
-    }
+	@Test(dataProvider = "loginTestData",priority = 4)
+	public void Test_login_With_EmptyTextfields (String scenario, String email, String password, String expectedError) throws InterruptedException {
+		LoginPagePom loginPage = new LoginPagePom(driver);
 
-    @DataProvider(name = "passwordVisibilityData")
-    public Object[][] passwordVisibilityDataProvider() throws Throwable {
-        String userID = read.readStringData("LoginData", 6, 0);
-        String password = read.readStringData("LoginData", 6, 1);
-        return new Object[][] {
-            {userID, password}
-        };
-    }
-    
-    @AfterMethod
-    public void tearDown() throws Throwable {
-        // Restart the app to ensure a fresh state for the next test
-        new loginPage().restart();
-    }
+		// Initialize SoftAssert
+		SoftAssert softAssert = new SoftAssert();
+
+		// Enter email and password based on the scenario
+		loginPage.getEmailTextField().sendKeys(email);
+		loginPage.getPasswordTextField().sendKeys(password);
+
+		// Click the 'Log In' button
+		loginPage.getLoginButton().click();
+        Thread.sleep(Duration.ofSeconds(3));
+		WebElement Error = driver.findElement(By.xpath("/html/body/div/div[1]/div/div/div/form/div[3]"));
+		
+		softAssert.assertTrue(Error.isDisplayed(), Error.getText()+" Error message is not displayed.");
+		softAssert.assertEquals(Error.getText(), expectedError, "Email error message text is incorrect.");
+
+		// Assert all conditions
+		softAssert.assertAll();
+	}
+	
 
 }
